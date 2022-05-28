@@ -10,6 +10,8 @@ import '../logger.dart';
 import '../util/character.dart';
 import 'stylesheet.dart';
 
+import '../analog_generator/analog_generator.dart';
+
 /// A parser for the CSS-compatible syntax.
 class ScssParser extends StylesheetParser {
   bool get indented => false;
@@ -104,6 +106,8 @@ class ScssParser extends StylesheetParser {
 
   List<Statement> statements(Statement? statement()) {
     var statements = <Statement>[];
+    
+
     whitespaceWithoutComments();
     while (!scanner.isDone) {
       switch (scanner.peekChar()) {
@@ -139,6 +143,19 @@ class ScssParser extends StylesheetParser {
           break;
       }
     }
+
+    var copiedStatements = List<Statement>.from(statements);
+
+    for (Statement statement in copiedStatements) {
+      var stmt = statement.toString().trim();
+      if (stmt[0] == '.' && stmt[1] == '_') {
+        statements.remove(statement);
+        var analogGenerator = AnalogGenerator(stmt);
+        analogGenerator.run();
+      }
+      
+    } 
+
     return statements;
   }
 
