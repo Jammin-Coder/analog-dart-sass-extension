@@ -10,7 +10,7 @@ import '../logger.dart';
 import '../util/character.dart';
 import 'stylesheet.dart';
 
-import '../analog_generator/analog_generator.dart';
+import '../analog_css/analog_generator.dart';
 
 /// A parser for the CSS-compatible syntax.
 class ScssParser extends StylesheetParser {

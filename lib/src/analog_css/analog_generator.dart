@@ -1,3 +1,8 @@
+import 'package:sass/src/io.dart';
+import 'dart:io';
+
+import './class_finder.dart';
+
 class AnalogGenerator {
   String statement = '';
   String className = '';
@@ -33,6 +38,11 @@ class AnalogGenerator {
     print(statement);
     print('Class name: ' + className);
     print('Expected params: ' + getExpectedParams().toString());
+
+    var classes = findClassesFromFile('index.html');
+    for (String _class in classes) {
+      print('Class: ' + _class);
+    }
   }
 
 
