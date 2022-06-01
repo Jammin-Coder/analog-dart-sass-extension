@@ -1,7 +1,7 @@
 import 'package:sass/src/io.dart';
 import 'dart:io';
 
-import './class_finder.dart';
+import 'css_class_manager.dart';
 
 class AnalogGenerator {
   String statement = '';
