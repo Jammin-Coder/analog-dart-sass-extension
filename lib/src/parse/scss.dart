@@ -3,6 +3,8 @@
 // https://opensource.org/licenses/MIT.
 
 import 'package:charcode/charcode.dart';
+import 'package:sass/src/analog_css/class_finder.dart';
+import 'package:sass/src/io.dart';
 
 import '../ast/sass.dart';
 import '../interpolation_buffer.dart';
@@ -146,12 +148,18 @@ class ScssParser extends StylesheetParser {
 
     var copiedStatements = List<Statement>.from(statements);
 
+    writeFile('classes.txt', ''); // Delete classes.txt contents
+
+    var cssClasses = ['p-1', 'm-2', 'bg-blue'];
+    print(cssClasses);
+    appendClassesToFile('classes.txt', cssClasses);
+
+
     for (Statement statement in copiedStatements) {
       var stmt = statement.toString().trim();
       if (stmt[0] == '.' && stmt[1] == '_') {
         statements.remove(statement);
         var analogGenerator = AnalogGenerator(stmt);
-        analogGenerator.run();
       }
       
     } 

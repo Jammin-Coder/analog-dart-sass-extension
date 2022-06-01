@@ -1,4 +1,12 @@
 import 'package:sass/src/io.dart';
+import 'dart:io';
+
+void appendClassesToFile(String path, List<String> classes) async {
+  File file = File(path);
+  for (int i = 0; i < classes.length; i++) {
+    await file.writeAsString("${classes[i]}\n", mode: FileMode.append);
+  }
+}
 
 List<String> getClassNamesFromClassAttribute(String classAttribute) {
   var parsedClassNames = <String>[];

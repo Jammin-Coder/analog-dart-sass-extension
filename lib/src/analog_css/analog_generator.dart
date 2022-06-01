@@ -33,18 +33,4 @@ class AnalogGenerator {
 
     return expectedParams;
   }
-
-  void run() {
-    print(statement);
-    print('Class name: ' + className);
-    print('Expected params: ' + getExpectedParams().toString());
-
-    var classes = findClassesFromFile('index.html');
-    for (String _class in classes) {
-      print('Class: ' + _class);
-    }
-  }
-
-
-
 }
