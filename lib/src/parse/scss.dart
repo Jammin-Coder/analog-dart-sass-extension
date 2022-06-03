@@ -146,11 +146,20 @@ class ScssParser extends StylesheetParser {
       }
     }
 
-    // Find Analog statements and parse them
-    var copiedStatements = List<Statement>.from(statements);
 
+    // Code added here by Jammin-Coder
+
+
+    // Find Analog statements and parse them
+    List<Statement> copiedStatements = List<Statement>.from(statements);
+    int lastIndex = copiedStatements.length -1;
+    String lastStatement = copiedStatements[lastIndex].toString();
     File file = File('analog_statements.txt');
-    file.writeAsStringSync('');
+    
+    if (!lastStatement.contains('/*# sourceMappingURL=')) {
+      file.writeAsStringSync('');
+    }
+    
 
     for (Statement statement in copiedStatements) {
       var stmt = statement.toString().trim();
@@ -158,10 +167,10 @@ class ScssParser extends StylesheetParser {
         statements.remove(statement);
 
         file.writeAsStringSync(stmt + '\n', mode: FileMode.append);
-
-        var analogGenerator = AnalogGenerator(stmt);
       }
-    } 
+    }
+
+    // End of added code
 
     return statements;
   }

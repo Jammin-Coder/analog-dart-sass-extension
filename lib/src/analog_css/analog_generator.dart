@@ -26,9 +26,9 @@ class AnalogGenerator {
     return statement.split(' ')[0].replaceFirst('._', '');
   }
 
-  List<int> getPrameterPositions(String analogClass) {
+  List<int> getPrameterPositions(String analogStatementClass) {
     List<int> positions = [];
-    List<String> components = analogClass.split('-');
+    List<String> components = analogStatementClass.split('-');
 
     for (int i = 0; i < components.length; i++) {
       String component = components[i];
@@ -38,8 +38,8 @@ class AnalogGenerator {
     return positions;
   }
 
-  int getParamCount(String analogClass) {
-    return getPrameterPositions(analogClass).length;
+  int getParamCount(String analogStatementClass) {
+    return getPrameterPositions(analogStatementClass).length;
   }
 
   List<String>? getExpectedParams() {
@@ -59,29 +59,62 @@ class AnalogGenerator {
     return expectedParams;
   }
 
+  Map<String, String> getMappedParams(String cssClass) {
+    Map<String, String> paramMap = {};
+    List<String> cssClassComponents = cssClass.split('-');
+    for (int pos in parameterPostitions) {
+      String param = classNameComponents[pos];
+      paramMap[param] = cssClassComponents[pos];
+    }
+    
+    return paramMap;
+  }
 
-  bool parameterPositionsOK(List<int> paramPositions) {
+  bool componentIsParam(String component) {
+    return component[0] == '#';
+  }
+
+  bool statementMatchesAnalogClass(String cssClassName, String analogClassName) {
+    List<String> cssClassComponents = cssClassName.split('-');
+    List<String> analogClassComponents = analogClassName.split('-');
+
+    // Incorrect length
+    if (cssClassComponents.length != analogClassComponents.length) return false;
+
     int i = 0;
-    for (int pos in paramPositions) {
-      if (pos != parameterPostitions[i]) return false;
+    for (String component in cssClassComponents) {
+      String analogComponent = analogClassComponents[i];
+
+      if (component != analogComponent && !componentIsParam(analogComponent)) return false;
       i++;
     }
-
+    
     return true;
   }
 
-  String findPatternMatch(List<String> classNamesToCompare) {
-    String output = "";
+  String findMatchingCssClass(List<String> classNamesToCompare) {
+    for (String cssClass in classNamesToCompare) {
+      if (!statementMatchesAnalogClass(cssClass, className)) continue;
+      return cssClass;
+    }
 
-    for (String analogClass in classNamesToCompare) {
-      List<String> componentsToCompare = analogClass.split('-');
+    return '';
+  }
 
-      // Skip itteration if any of these conditions are met
-      if (componentsToCompare.length != componentCount) continue;
-      print('Class $analogClass matches $className');
+  String generateAnalogClass(String cssClass) {
+    String output = statement;
+    
+    Map<String, String> paramMap = getMappedParams(cssClass);
+    
+    for (String paramName in paramMap.keys) {
+      String paramValue = paramMap[paramName]!;
 
+      RegExp pattern = RegExp(r'' + paramName);
 
-    }    
-    return output;
+      output = output.replaceAll(pattern, paramValue);
+    }
+
+    return output.replaceFirst('._', '.');
+
   }
 }
