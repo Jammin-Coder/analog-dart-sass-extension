@@ -1,18 +1,12 @@
 import 'package:sass/src/io.dart';
 import 'dart:io';
 
-
 class CSSClassManager {
   List<String> cssClasses = [];
 
-  void appendClassesToFile(String path, List<String> classes) async {
-    File file = File(path);
-    await file.writeAsString('');
-
-    for (int i = 0; i < classes.length; i++) {
-      String cssClass = classes[i];
-      await file.writeAsString("$cssClass\n", mode: FileMode.append);
-    }
+  List<String> getAnalogStatements() {
+    File file = File('analog_statements.txt');
+    return file.readAsLinesSync();
   }
 
   List<String> getClassNamesFromClassAttribute(String classAttribute) {

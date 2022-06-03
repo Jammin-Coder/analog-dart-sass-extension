@@ -17,3 +17,5 @@ node_modules/
 *.css
 *.scss
 *.map
+*.html
+*.txt

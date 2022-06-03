@@ -12,6 +12,7 @@ import '../util/character.dart';
 import 'stylesheet.dart';
 
 import '../analog_css/analog_generator.dart';
+import 'dart:io';
 
 /// A parser for the CSS-compatible syntax.
 class ScssParser extends StylesheetParser {
@@ -147,10 +148,17 @@ class ScssParser extends StylesheetParser {
 
     // Find Analog statements and parse them
     var copiedStatements = List<Statement>.from(statements);
+
+    File file = File('analog_statements.txt');
+    file.writeAsStringSync('');
+
     for (Statement statement in copiedStatements) {
       var stmt = statement.toString().trim();
       if (stmt[0] == '.' && stmt[1] == '_') {
         statements.remove(statement);
+
+        file.writeAsStringSync(stmt + '\n', mode: FileMode.append);
+
         var analogGenerator = AnalogGenerator(stmt);
       }
     } 
