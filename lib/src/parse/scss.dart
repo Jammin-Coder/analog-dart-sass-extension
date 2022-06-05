@@ -11,7 +11,7 @@ import '../logger.dart';
 import '../util/character.dart';
 import 'stylesheet.dart';
 
-import '../analog_css/analog_generator.dart';
+import 'package:http/http.dart' as http;
 import 'dart:io';
 
 /// A parser for the CSS-compatible syntax.
@@ -106,6 +106,26 @@ class ScssParser extends StylesheetParser {
     }
   }
 
+  void shareStatement(String statement) async {
+    bool success = false;
+    int tryDelay = 2;
+    while (success == false) {
+      try {
+        var url = Uri.parse('http://localhost:8080/');
+        await http.post(url, headers: {'statement': statement});
+
+        success = true;
+
+      } on SocketException {
+        Future.delayed(Duration(seconds: tryDelay));
+
+        continue;
+      }
+    }
+    
+    
+  }
+
   List<Statement> statements(Statement? statement()) {
     var statements = <Statement>[];
     
@@ -152,21 +172,12 @@ class ScssParser extends StylesheetParser {
 
     // Find Analog statements and parse them
     List<Statement> copiedStatements = List<Statement>.from(statements);
-    int lastIndex = copiedStatements.length -1;
-    String lastStatement = copiedStatements[lastIndex].toString();
-    File file = File('analog_statements.txt');
-    
-    if (!lastStatement.contains('/*# sourceMappingURL=')) {
-      file.writeAsStringSync('');
-    }
-    
 
     for (Statement statement in copiedStatements) {
       var stmt = statement.toString().trim();
+      
       if (stmt[0] == '.' && stmt[1] == '_') {
-        statements.remove(statement);
-
-        file.writeAsStringSync(stmt + '\n', mode: FileMode.append);
+        shareStatement(stmt);
       }
     }
 
