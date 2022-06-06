@@ -92,13 +92,14 @@ class AnalogGenerator {
     return true;
   }
 
-  String findMatchingCssClass(List<String> classNamesToCompare) {
+  List<String> findMatchingCssClasses(List<String> classNamesToCompare) {
+    List<String> matchedClasses = [];
     for (String cssClass in classNamesToCompare) {
       if (!statementMatchesAnalogClass(cssClass, className)) continue;
-      return cssClass;
+      matchedClasses.add(cssClass);
     }
 
-    return '';
+    return matchedClasses;
   }
 
   String generateAnalogClass(String cssClass) {

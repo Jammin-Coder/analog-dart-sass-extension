@@ -9,7 +9,6 @@ class StatementListener {
   Future<void> listen() async {
     var server = await HttpServer.bind(InternetAddress.anyIPv6, 8080);
     await server.forEach((HttpRequest request) {
-      print(request.headers['statement']);
       if (request.headers['statement'] != null) {
         String stmt = request.headers['statement']![0];
         if (!statements.contains(stmt)) statements.add(stmt);
@@ -48,14 +47,18 @@ void main(List<String> args) async {
 
     var statements = StatementListener().getStatements();
 
+
     for (String statement in statements) {
       AnalogGenerator analogGenerator = AnalogGenerator(statement);
-      String cssClass = analogGenerator.findMatchingCssClass(classes);
+      List<String> cssClasses = analogGenerator.findMatchingCssClasses(classes);
 
-      if (cssClass == '') continue;
+      for (String cssClass in cssClasses) {
+        if (cssClass == '') continue;
 
-      String analogCssClass = analogGenerator.generateAnalogClass(cssClass);
-      currentOutput += analogCssClass + '\n';
+        String analogCssClass = analogGenerator.generateAnalogClass(cssClass);
+        currentOutput += analogCssClass + '\n';
+      }
+      
       
     }
     
@@ -64,7 +67,7 @@ void main(List<String> args) async {
     }
 
 
-    outFile.writeAsStringSync(lastOutput, mode: FileMode.append);
+    outFile.writeAsStringSync(lastOutput);
 
     await Future.delayed(Duration(seconds: 1));
   }
