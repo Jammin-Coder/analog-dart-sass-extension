@@ -30,7 +30,12 @@ void main(List<String> args) async {
   print('Checking markup for classes every 1 second...');
 
   File outFile = File('analog.scss');
-  
+  List<String> files = [];
+
+  // Get files to watch
+  for (String arg in args) {
+    if (File(arg).existsSync()) files.add(arg);
+  }
 
   String lastOutput = '';
 
@@ -40,7 +45,7 @@ void main(List<String> args) async {
     
     outFile.writeAsStringSync('');
     String currentOutput = '';
-    var files = ['index.html', 'nav.html'];
+    
     CSSClassManager cssClassManager = CSSClassManager();
     
     List<String> classes = cssClassManager.getClassesFromFiles(files);

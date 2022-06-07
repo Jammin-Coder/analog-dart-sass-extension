@@ -40,4 +40,17 @@ If the class name in the markup were `padding-2`, it would generate this:
 
 The parameters are denoted by a hash symbol (`#`), and must be separated by dashes (`-`) when used in the class name as a parameter.  
 
+## To run the program:
+First run `analog.dart` and provide the names of the files you want it to watch:  
+```
+dart run bin/analog.dart index.html about.html
+```
+
+Then run Sass normaly, providing the name of the `scss` file that contains your template classes:  
+```
+dart run bin/sass.dart --watch templates.scss:output.css
+```
+
+You may then define template classes in `templates.scss` and `analog.dart` will match them to class names in your markup.
+
 ### This was just a brief overview of the main concepts of the program; there are still many bugs and many improvements that need to be made. I will update the docs as I add/change features 
