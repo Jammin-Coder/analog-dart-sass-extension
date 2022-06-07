@@ -106,6 +106,7 @@ class ScssParser extends StylesheetParser {
     }
   }
 
+  // shareStatement function added by Jammin-Coder
   void shareStatement(String statement) async {
     bool success = false;
     int tryDelay = 2;
@@ -168,8 +169,6 @@ class ScssParser extends StylesheetParser {
 
 
     // Code added here by Jammin-Coder
-
-
     // Find Analog statements and parse them
     List<Statement> copiedStatements = List<Statement>.from(statements);
 
@@ -180,7 +179,6 @@ class ScssParser extends StylesheetParser {
         shareStatement(stmt);
       }
     }
-
     // End of added code
 
     return statements;
