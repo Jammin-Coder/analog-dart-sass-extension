@@ -1,7 +1,6 @@
 
+# Archived. The new program is https://github.com/Jammin-Coder/AnalogCSS
 
-
-# Analog Sass (work in progress)
 ### Forked and modified from https://github.com/sass/dart-sass.
 
 
